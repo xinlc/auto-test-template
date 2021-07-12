@@ -15,6 +15,8 @@ class BaiduSearchPage(BasePage):
     kw = PageElement(id_='kw')
     su = PageElement(id_='su')
     search_results = PageElement(xpath='//*[@id="1"]/h3/a')
+    # 尽可能用 css 选择器，性能会更好，id不能已数字开头
+    # search_results = PageElement(css='div[id="1"] > h3 > a')
 
     def __init__(self, driver):
         super().__init__(driver)

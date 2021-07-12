@@ -17,16 +17,18 @@ import requests
 @pytest.fixture(scope="session")
 def login():
     driver = webdriver.Chrome()
-    driver.implicitly_wait(30)
+    # 不建议使用隐式等待，尽可能使用显示等待
+    driver.implicitly_wait(10)
     base_url = 'https://www.baidu.com'
     s = requests.Session()
 
     yield driver, s, base_url
-    print('turn off browser driver')
 
-    driver.quit()
-    print('turn off requests driver')
+    print('\nturn off requests driver')
     s.close()
+
+    print('turn off browser driver')
+    driver.quit()
 
 
 # @pytest.fixture(scope="function", autouse=True)

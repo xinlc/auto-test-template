@@ -25,6 +25,10 @@ class TestUserLogin(object):
         # 忽略https安全拦截
         options.add_argument('--ignore-certificate-errors')
 
+        # 无头模式
+        # options.add_argument('--headless')
+        # options.add_argument('--disable-gpu')
+
         # 初始化 webdriver
         self.driver = webdriver.Chrome(options=options)
 
@@ -50,6 +54,10 @@ class TestUserLogin(object):
         if username != '':
             # 等待提示框
             WebDriverWait(self.driver, 5).until(EC.title_is(expected))
+
+            # 取反
+            # WebDriverWait(self.driver, 5).until_not(EC.title_is(expected))
+
             sleep(3)
             # 验证
             assert self.driver.title == expected

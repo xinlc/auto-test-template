@@ -10,12 +10,10 @@ import os
 import time
 import pytest
 import pandas as pd
-
-
-# 读取Excel文件 -- Pandas
 from pages.baidu_search_page import BaiduSearchPage
 
 
+# 读取Excel文件 -- Pandas
 def read_data_from_pandas(excel_file, sheet_name):
     if not os.path.exists(excel_file):
         raise ValueError("File not exists")
@@ -29,7 +27,7 @@ class TestBaidu:
                              read_data_from_pandas(r'../data/baidu_ddt.xlsx', 'Sheet1'))
     def test_baidu_search(self, login, search_string, expect_string):
         driver, s, base_url = login
-        driver.get(base_url)
+        # driver.get(base_url)
 
         search_page = BaiduSearchPage(driver)
         search_page.goto_search_page(base_url)
