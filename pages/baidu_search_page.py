@@ -15,6 +15,7 @@ class BaiduSearchPage(BasePage):
     kw = PageElement(id_='kw')
     su = PageElement(id_='su')
     search_results = PageElement(xpath='//*[@id="1"]/h3/a')
+
     # 尽可能用 css 选择器，性能会更好，id不能已数字开头
     # search_results = PageElement(css='div[id="1"] > h3 > a')
 
@@ -30,5 +31,5 @@ class BaiduSearchPage(BasePage):
     def search(self):
         self.su.click()
 
-    def get_search_results(self):
+    def get_search_results(self) -> str:
         return self.search_results.get_attribute('innerHTML')

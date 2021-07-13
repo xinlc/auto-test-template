@@ -44,4 +44,4 @@ class TestBaidu:
 
 
 if __name__ == "__main__":
-    pytest.main(['-s', '-v', 'test_baidu_ddt.py'])
+    pytest.main(['-s', '-v', os.path.basename(__file__)])
