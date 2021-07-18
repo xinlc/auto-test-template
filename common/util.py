@@ -14,8 +14,8 @@ import os
 import pandas as pd
 
 
-# 获取日志
 def get_logger():
+    """获取日志"""
     import logging
     import logging.handlers
     import datetime
@@ -36,13 +36,14 @@ def get_logger():
     return logger
 
 
-# 生成随机字符串
 def gen_random_str():
+    """生成随机字符串"""
     rand_str = ''.join(random.sample(string.ascii_letters + string.digits, 8))
     return rand_str
 
 
 def save_cookie(driver, path):
+    """保存cookie"""
     with open(path, 'wb') as filehandler:
         cookies = driver.get_cookies()
         print(cookies)
@@ -50,22 +51,23 @@ def save_cookie(driver, path):
 
 
 def load_cookie(driver, path):
+    """获取cookie"""
     with open(path, 'rb') as cookiesfile:
         cookies = pickle.load(cookiesfile)
         for cookie in cookies:
             driver.add_cookie(cookie)
 
 
-# 读取Excel文件 - list
 def read_data_from_excel(excel_file, sheet_name):
+    """读取Excel文件 - list"""
     if not os.path.exists(excel_file):
         raise ValueError("File not exists")
     df = pd.read_excel(excel_file, sheet_name)
     return df.values.tolist()
 
 
-# 读取Excel文件 - dic
 def read_data_dic_from_excel(excel_file, sheet_name):
+    """读取Excel文件 - dic"""
     if not os.path.exists(excel_file):
         raise ValueError("File not exists")
     df = pd.read_excel(excel_file, sheet_name)
@@ -93,3 +95,13 @@ def read_data_dic_from_excel(excel_file, sheet_name):
     #     list_dic.append(df_line)
 
     return list_dic
+
+
+def check_null_and_opt(val, method):
+    """方法值不为空，则执行
+    :param val: 执行方法参数
+    :param method: 不为空执行的方法
+    """
+    if not pd.isnull(val):
+        method(val)
+

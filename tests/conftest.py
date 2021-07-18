@@ -12,6 +12,9 @@ import pytest
 from selenium import webdriver
 import requests
 
+USERNAME = 'your username'
+PWD = 'your pwd'
+
 
 # 此方法名可以是你登录的业务代码，也可以是其他，这里暂命名为login
 @pytest.fixture(scope="session")
@@ -22,6 +25,15 @@ def login():
     base_url = 'https://www.baidu.com'
     s = requests.Session()
 
+    # # 登录
+    # login_page = UserLoginPage(driver)
+    # login_page.goto_login_page(base_url)
+    # login_page.input_username(USERNAME)
+    # login_page.input_pwd(PWD)
+    # login_page.click_login_btn()
+    #
+    # time.sleep(1)
+
     yield driver, s, base_url
 
     print('\nturn off requests driver')
@@ -29,7 +41,6 @@ def login():
 
     print('turn off browser driver')
     driver.quit()
-
 
 # @pytest.fixture(scope="function", autouse=True)
 # def connect_db():
