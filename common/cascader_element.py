@@ -7,12 +7,16 @@ __author__ = 'Richard'
 __version__ = '2021-07-17'
 
 import time
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
+from common import utils
+from common.base_page import BasePage
 
-class CascaderElement(object):
+logger = utils.get_logger(__name__)
+
+
+class CascaderElement(BasePage):
     # 级联选择器第一级选择项集合
     first_level_items_loc = (
         By.CSS_SELECTOR,
@@ -23,34 +27,32 @@ class CascaderElement(object):
         By.CSS_SELECTOR,
         'body > div.el-cascader__dropdown.el-popper:not([style*="display: none;"]) > div.el-cascader-panel > div:nth-child(2) ul li')
 
-    def __init__(self, driver: WebDriver):
-        """
-        :param driver: 驱动
-        """
-        self.driver = driver
-
-    def _find_elements(self, locator):
-        return self.driver.find_elements(*locator)
-
     def select_first_level_item(self, item_text):
         """选择级联下拉元素"""
 
+        logger.debug("选择级联选择器第一级选择项：%s", item_text)
         time.sleep(0.3)
-        items = self._find_elements(self.first_level_items_loc)
-        for item in items:
+        items = self.find_elements(self.first_level_items_loc)
+        logger.debug("级联选择器第一级选择项集合：%s", len(items))
+        for i, item in enumerate(items):
             if item.text == item_text:
                 item.click()
+                logger.debug("找到并点击级联选择器第一级选择项：%s", i)
                 time.sleep(0.3)
                 WebDriverWait(self.driver, 5).until_not(
                     lambda driver: item.find_element_by_css_selector('i.el-icon-loading'))
+                logger.debug("等待第二级选择项加载完毕")
         pass
 
     def select_second_level_item(self, item_text):
         """选择级联下拉元素"""
 
+        logger.debug("选择级联选择器第二级选择项：%s", item_text)
         time.sleep(0.3)
-        items = self._find_elements(self.second_level_items_loc)
-        for item in items:
+        items = self.find_elements(self.second_level_items_loc)
+        logger.debug("级联选择器第二级选择项集合：%s", len(items))
+        for i, item in enumerate(items):
             if item.text == item_text:
                 item.click()
+                logger.debug("找到并点击级联选择器第二级选择项：%s", i)
         pass

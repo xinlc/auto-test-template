@@ -7,34 +7,27 @@ MessageBox 的作用是美化系统自带的 alert、confirm 和 prompt。
 __author__ = 'Richard'
 __version__ = '2021-07-17'
 
-import time
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
+from common import utils
+from common.base_page import BasePage
+
+logger = utils.get_logger(__name__)
 
 
 # Alert 弹框
-class MessageAlertElement(object):
+class MessageAlertElement(BasePage):
     confirm_btn = (
         By.CSS_SELECTOR,
         'body > div.el-message-box__wrapper:not([style*="display: none;"]) .el-message-box__btns > button:nth-child(2)')
 
-    def __init__(self, driver: WebDriver):
-        """Alert message
-        :param driver: 驱动
-        """
-        self.driver = driver
-
-    def _find_element(self, locator):
-        return self.driver.find_element(*locator)
-
     def confirm(self):
-        self._find_element(self.confirm_btn).click()
+        self.click(self.confirm_btn)
+        logger.debug("点击确定按钮")
 
 
 # Confirm 弹框
-class MessageConfirmElement(object):
+class MessageConfirmElement(BasePage):
     cancel_btn = (
         By.CSS_SELECTOR,
         'body > div.el-message-box__wrapper:not([style*="display: none;"]) .el-message-box__btns > button:nth-child(1)')
@@ -43,17 +36,10 @@ class MessageConfirmElement(object):
         By.CSS_SELECTOR,
         'body > div.el-message-box__wrapper:not([style*="display: none;"]) .el-message-box__btns > button:nth-child(2)')
 
-    def __init__(self, driver: WebDriver):
-        """Confirm message
-        :param driver: 驱动
-        """
-        self.driver = driver
-
-    def _find_element(self, locator):
-        return self.driver.find_element(*locator)
-
     def cancel(self):
-        self._find_element(self.cancel_btn).click()
+        self.click(self.cancel_btn)
+        logger.debug("点击取消按钮")
 
     def confirm(self):
-        self._find_element(self.confirm_btn).click()
+        self.click(self.confirm_btn)
+        logger.debug("点击确定按钮")

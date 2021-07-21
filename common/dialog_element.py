@@ -6,12 +6,18 @@
 __author__ = 'Richard'
 __version__ = '2021-07-17'
 
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
+
+from common import utils
+from common.base_page import BasePage
+
+logger = utils.get_logger(__name__)
 
 
 # Confirm Dialog  弹框
-class DialogConfirmElement(object):
+class DialogConfirmElement(BasePage):
+    # dialog = (By.CSS_SELECTOR, 'div.el-dialog__wrapper:not([style*="display: none;"])')
+
     cancel_btn = (
         By.CSS_SELECTOR,
         'div.el-dialog__wrapper:not([style*="display: none;"]) div.el-dialog__footer > span > div:nth-child(1) > div')
@@ -20,17 +26,10 @@ class DialogConfirmElement(object):
         By.CSS_SELECTOR,
         'div.el-dialog__wrapper:not([style*="display: none;"]) div.el-dialog__footer > span > div:nth-child(2) > div')
 
-    def __init__(self, driver: WebDriver):
-        """Confirm Dialog
-        :param driver: 驱动
-        """
-        self.driver = driver
-
-    def _find_element(self, locator):
-        return self.driver.find_element(*locator)
-
     def cancel(self):
-        self._find_element(self.cancel_btn).click()
+        self.find_element(self.cancel_btn).click()
+        logger.debug("点击取消按钮")
 
     def confirm(self):
-        self._find_element(self.confirm_btn).click()
+        self.find_element(self.confirm_btn).click()
+        logger.debug("点击确定按钮")

@@ -7,21 +7,16 @@ __author__ = 'Richard'
 __version__ = '2021-07-17'
 
 import time
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from common.base_page import BasePage
+
 
 # 区域加载
-class LoadingElement(object):
+class LoadingElement(BasePage):
     loading = (By.CSS_SELECTOR, 'div.el-loading-mask:not([class*="is-fullscreen"])')
-
-    def __init__(self, driver: WebDriver):
-        """区域加载
-        :param driver: 驱动
-        """
-        self.driver = driver
 
     def _find_element(self, locator):
         return self.driver.find_element(*locator)
@@ -33,14 +28,8 @@ class LoadingElement(object):
 
 
 # 整页加载
-class LoadingFullscreenElement(object):
+class LoadingFullscreenElement(BasePage):
     loading = (By.CSS_SELECTOR, 'div.el-loading-mask.is-fullscreen')
-
-    def __init__(self, driver: WebDriver):
-        """整页加载
-        :param driver: 驱动
-        """
-        self.driver = driver
 
     def _find_element(self, locator):
         return self.driver.find_element(*locator)

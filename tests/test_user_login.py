@@ -6,6 +6,7 @@
 __author__ = 'Richard'
 __version__ = '2021-07-10'
 
+import allure
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -39,6 +40,7 @@ class TestUserLogin(object):
         self.driver.quit()
 
     # 测试用户登录
+    @allure.title("测试用户登录，测试数据是：{username},{pwd},{expected}")
     @pytest.mark.parametrize('username, pwd, expected', login_data)
     def test_user_login(self, username, pwd, expected):
 
