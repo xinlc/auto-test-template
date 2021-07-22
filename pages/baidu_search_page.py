@@ -14,9 +14,14 @@ from common.page_objects import PageElement
 
 class BaiduSearchPage(BasePage):
     target_page = '/'
-    kw = PageElement(id_='kw')
+    # kw = PageElement(id_='kw')
     su = PageElement(id_='su')
     search_results = PageElement(xpath='//*[@id="1"]/h3/a')
+
+    # 上下文用法
+    form = PageElement(id_='form')
+    kw_with_from = PageElement(css='#kw', context='form')
+    kw_with_context = PageElement(css='#kw', context=True)
 
     # 尽可能用 css 选择器，性能会更好，id不能已数字开头
     # search_results = PageElement(css='div[id="1"] > h3 > a')
@@ -30,7 +35,8 @@ class BaiduSearchPage(BasePage):
 
     @allure.step("输入搜索关键字 {word}")
     def input_search_string(self, word):
-        self.kw = word
+        self.kw_with_from = word
+        # self.kw_with_context(self.form).send_keys(word)
 
     @allure.step("点击搜索按钮")
     def search(self):

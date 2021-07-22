@@ -1,16 +1,21 @@
-# This is a sample Python script.
+"""
+main
+"""
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+__author__ = 'Richard'
+__version__ = '2021-07-18'
+
+# main.py
+import argparse
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+def main():
+    parser = argparse.ArgumentParser(prog="testing", usage="This is a demo")
+    parser.add_argument("--name", default='Richard', help="This is a demo framework", action="store")
+    args = parser.parse_args()
+    if args.name:
+        print("Hello %s" % args.name)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    main()

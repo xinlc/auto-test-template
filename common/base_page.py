@@ -6,18 +6,25 @@ POM 通用操作
 __author__ = 'Richard'
 __version__ = '2021-07-10'
 
+import time
+import json
+from datetime import datetime
 from typing import Union
 
-import json
+import allure
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
+
+from common import utils
 from common.page_objects import PageObject, PageElement
 from common.requests_helper import SharedAPI
 from common.selenium_helper import SeleniumHelper
+
+logger = utils.get_logger(__name__)
 
 WAIT_TIMEOUT = 5
 POLL_DELAY = 0.5
@@ -44,6 +51,21 @@ class BasePage(PageObject):
         """
         t = self.default_timeout if timeout is None else timeout
         return WebDriverWait(self.driver, t, poll_frequency=self.default_poll_delay).until(method)
+
+    def wait_element_to_be_visible(self, locator, timeout=None):
+        """等待元素可见"""
+        start_time = time.time()
+        try:
+            logger.info("开始等待页面元素<{}>是否可见.".format(locator))
+            t = self.default_timeout if timeout is None else timeout
+            WebDriverWait(self.driver, t, poll_frequency=self.default_poll_delay).until(
+                EC.visibility_of_element_located(locator))
+        except Exception as e:
+            logger.error("页面元素<{}>等待可见失败！".format(locator))
+            raise e
+        else:
+            end_time = time.time()
+            logger.info("页面元素<{}>等待可见，等待时间：{}秒.".format(locator, round(end_time - start_time, 2)))
 
     def find_element(self, locator, context: WebElement = None, timeout=None) -> WebElement:
         """
@@ -126,3 +148,10 @@ class BasePage(PageObject):
     def scroll_to(self, x, y):
         """窗口滚动"""
         self.driver.execute_script('window.scrollTo(arguments[0],arguments[1])', x, y)
+
+    def save_screenshot(self, name):
+        """页面截屏
+        :param name: 说明
+        """
+        file = utils.get_screenshot_as_file(self.driver, name)
+        allure.attach(file, name, allure.attachment_type.PNG)

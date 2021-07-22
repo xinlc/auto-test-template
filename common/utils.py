@@ -7,6 +7,7 @@
 __author__ = 'Richard'
 __version__ = '2021-07-10'
 
+import json
 import pickle
 import random
 import string
@@ -102,11 +103,20 @@ def load_cookie(driver, path):
             driver.add_cookie(cookie)
 
 
+def read_data_from_json(json_file):
+    """读取JSON文件"""
+    if not os.path.exists(json_file):
+        raise ValueError("File not exists")
+    with open(json_file, mode='r', encoding='utf-8') as f:
+        return json.load(f)
+
+
 def read_data_from_excel(excel_file, sheet_name, types=None):
     """读取Excel文件 - list"""
     if not os.path.exists(excel_file):
         raise ValueError("File not exists")
     df = pd.read_excel(excel_file, sheet_name, dtype=types)
+    df.fillna("", inplace=True)
     return df.values.tolist()
 
 
@@ -210,6 +220,35 @@ def chinese_location_resolution(location: str):
     province_city_area['area'] = province_city_area['区']
     province_city_area['address'] = province_city_area['地址']
     return province_city_area
+
+
+def save_screenshot(driver, name, path=None):
+    """页面截屏并保存截图
+    :param driver: 驱动
+    :param name: 截图名称，时间戳_name.png
+    :param path: 文件路径，默认 constants.PICTURE_DIR
+    :return: file name
+    """
+    st = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
+    f_name = st + '_{}.png'.format(name)
+    file_path = constants.PICTURE_DIR if path is None else path
+    file_name = os.path.join(file_path, f_name)
+    driver.get_screenshot_as_file(file_name)
+    return file_name
+
+
+def get_screenshot_as_file(driver, name, path=None):
+    """页面截屏并保存截图
+    :param driver: 驱动
+    :param name: 截图名称，时间戳_name.png
+    :param path: 文件路径，默认 constants.PICTURE_DIR
+    :return: file
+    """
+    # return driver.get_screenshot_as_file(file_name)
+    file_name = save_screenshot(driver, name, path)
+    with open(file_name, mode='rb') as f:
+        file = f.read()
+    return file
 
 
 if __name__ == '__main__':

@@ -27,32 +27,38 @@ class CascaderElement(BasePage):
         By.CSS_SELECTOR,
         'body > div.el-cascader__dropdown.el-popper:not([style*="display: none;"]) > div.el-cascader-panel > div:nth-child(2) ul li')
 
-    def select_first_level_item(self, item_text):
+    # 级联选择器第三级选择项集合
+    third_level_items_loc = (
+        By.CSS_SELECTOR,
+        'body > div.el-cascader__dropdown.el-popper:not([style*="display: none;"]) > div.el-cascader-panel > div:nth-child(3) ul li')
+
+    def __select_item(self, locator, item_text):
         """选择级联下拉元素"""
 
-        logger.debug("选择级联选择器第一级选择项：%s", item_text)
         time.sleep(0.3)
-        items = self.find_elements(self.first_level_items_loc)
-        logger.debug("级联选择器第一级选择项集合：%s", len(items))
+        items = self.find_elements(locator)
+        logger.debug("选择项集合：%s", len(items))
         for i, item in enumerate(items):
             if item.text == item_text:
                 item.click()
-                logger.debug("找到并点击级联选择器第一级选择项：%s", i)
+                logger.debug("找到并点击选择项：%s", i)
                 time.sleep(0.3)
-                WebDriverWait(self.driver, 5).until_not(
+                WebDriverWait(self.driver, self.default_timeout).until_not(
                     lambda driver: item.find_element_by_css_selector('i.el-icon-loading'))
-                logger.debug("等待第二级选择项加载完毕")
+                logger.debug("等待下一级选择项加载完毕")
         pass
+
+    def select_first_level_item(self, item_text):
+        """选择级联下拉元素"""
+        logger.debug("选择级联选择器第一级选择项：%s", item_text)
+        self.__select_item(self.first_level_items_loc, item_text)
 
     def select_second_level_item(self, item_text):
         """选择级联下拉元素"""
-
         logger.debug("选择级联选择器第二级选择项：%s", item_text)
-        time.sleep(0.3)
-        items = self.find_elements(self.second_level_items_loc)
-        logger.debug("级联选择器第二级选择项集合：%s", len(items))
-        for i, item in enumerate(items):
-            if item.text == item_text:
-                item.click()
-                logger.debug("找到并点击级联选择器第二级选择项：%s", i)
-        pass
+        self.__select_item(self.second_level_items_loc, item_text)
+
+    def select_third_level_item(self, item_text):
+        """选择级联下拉元素"""
+        logger.debug("选择级联选择器第三级选择项：%s", item_text)
+        self.__select_item(self.third_level_items_loc, item_text)

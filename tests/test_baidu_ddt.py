@@ -80,6 +80,7 @@ class TestBaidu:
         search_page = BaiduSearchPage(driver)
         search_page.goto_search_page(base_url)
         search_page.input_search_string(search_string)
+        # search_page.save_screenshot("截图啊")
         search_page.search()
 
         time.sleep(2)
