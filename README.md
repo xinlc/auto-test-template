@@ -77,6 +77,18 @@ export PATH=$PATH:$SELENIUM_DRIVER_HOME/
 ├── requirements.txt
 ```
 
+## EVN
+
+- MacOS Big Sur 11.5 Apple M1
+- Python 3.9.4
+- pip(3) 21.1.3
+- Pytest 6.2.4
+- Selenium 3.141.0
+- Google Chrome 92.0.4515.107 (arm64)
+- ChromeDriver 91.0.4472.101
+- Allure 2.14.0
+- OpenJDK 1.8 (Zulu)
+
 ## Documents
 
 - [python](https://github.com/python/cpython)

@@ -90,6 +90,8 @@ def start_driver(get_browser):
 
     # 不建议使用隐式等待，会跟显示等待产生时间叠加效果，尽可能使用BasePage中封装好的显示等待
     # driver.implicitly_wait(1)
+    # driver.set_page_load_timeout(10)
+    # driver.set_script_timeout(10)
     base_url = 'https://www.baidu.com'
     s = requests.Session()
 

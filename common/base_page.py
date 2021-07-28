@@ -67,6 +67,12 @@ class BasePage(PageObject):
             end_time = time.time()
             logger.info("页面元素<{}>等待可见，等待时间：{}秒.".format(locator, round(end_time - start_time, 2)))
 
+    def wait_ready(self, timeout=10):
+        """等待页面加载完毕"""
+        WebDriverWait(self.driver, timeout).until(
+            lambda d: d.execute_script('return document.readyState') == 'complete')
+        time.sleep(2)
+
     def find_element(self, locator, context: WebElement = None, timeout=None) -> WebElement:
         """
         获取元素
