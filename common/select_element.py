@@ -22,7 +22,10 @@ class SelectElement(BasePage):
         By.CSS_SELECTOR,
         'body > div.el-select-dropdown.el-popper:not([style*="display: none;"]) ul li')
 
-    def select_item(self, item_text):
+    # 下拉选择元素 xpath
+    select_dropdown_item_xpath_loc = '//body/div[contains(@class,"el-select-dropdown") and not(contains(@style,"display: none;"))]//ul/li/span[text()="{}"]'
+
+    def select_item_css(self, item_text):
         """
         下拉选择元素
         :param item_text: 元素文本
@@ -36,6 +39,22 @@ class SelectElement(BasePage):
             if item.text == item_text:
                 item.click()
                 logger.debug("找到并点击选择器选择项：%s", i)
+                break
 
         time.sleep(0.3)
+        pass
+
+    def select_item(self, item_text):
+        """
+        下拉选择元素
+        :param item_text: 元素文本
+        :return: None
+        """
+        locator = (
+            By.XPATH,
+            self.select_dropdown_item_xpath_loc.format(item_text)
+        )
+        if self.wait_for_element_to_be_clickable(locator):
+            self.find_element(locator).click()
+
         pass
